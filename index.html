@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>Capture Image</title>
+
+    
+    <script type="text/javascript" charset="utf-8" src="json2.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+  var imgDataNewUser = '';
+ 
+function getPicture(){
+    imgDataNewUser = '';
+    _gaq.push(['_trackEvent', 'Camera', 'Cámara levantada']);
+    navigator.camera.getPicture(onSuccess, onFail,
+          { quality: 14, correctOrientation: true,
+            destinationType: Camera.DestinationType.DATA_URL,
+            allowEdit: true });
+}
+ 
+function onSuccess(imageData) {
+ 
+    valueRotate = 0;
+    imgDataNewUser = imageData;
+    var img = $('<img src=""/>');
+ 
+    img.attr('src', "data:image/jpeg;base64," + imageData);
+ 
+    var fotoPerfilClass = $('.fotoPerfil');
+    fotoPerfilClass.empty();
+    fotoPerfilClass.append(img);
+    $('.imagenPerfil').trigger('create');
+}
+ 
+function onFail(message) {
+ 
+    imgDataNewUser = '';
+    if(message != null && (message.indexOf('cancelled') < 0
+            && message.indexOf('selected') < 0)){
+        navigator.notification.alert('Ha ocurrido un error'+
+                  ' con la camara: ' + message,
+                   function() {},"Información" );
+    }
+}
+
+    </script>
+    </head>
+    <body>
+        <button onclick="captureImage();">Capture Image</button> <br>
+    </body>
+</html>
